@@ -1,3 +1,4 @@
+import logging
 from functools import lru_cache
 from typing import ClassVar, override
 
@@ -8,6 +9,8 @@ from pydantic_settings import (
     PyprojectTomlConfigSettingsSource,
     SettingsConfigDict,
 )
+
+logger = logging.getLogger(__name__)
 
 
 class Settings(BaseSettings):
@@ -42,4 +45,6 @@ class Settings(BaseSettings):
 
 @lru_cache(maxsize=1)
 def get_settings() -> Settings:
-    return Settings()
+    settings = Settings()
+    logger.debug("Settings initialized: %s", settings)
+    return settings
