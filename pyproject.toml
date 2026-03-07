@@ -1,0 +1,17 @@
+[project]
+name = "diffprep"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Dominik Ocsofszki", email = "dominikocsofszki@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = []
+
+[project.scripts]
+diffprep = "diffprep:main"
+
+[build-system]
+requires = ["uv_build>=0.7.19,<0.8"]
+build-backend = "uv_build"
