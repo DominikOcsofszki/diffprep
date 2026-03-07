@@ -1,7 +1,7 @@
 [project]
 name = "diffprep"
 version = "0.1.0"
-description = "Add your description here"
+description = "Command-line JSON and XML diff preprocessor."
 readme = "README.md"
 authors = [
     { name = "Dominik Ocsofszki", email = "dominikocsofszki@gmail.com" }
@@ -30,7 +30,7 @@ dev = [
 
 
 [tool.ruff]
-line-length = 120
+line-length = 150
 target-version = "py313"
 src = ["src", "tests"]
 
@@ -40,3 +40,10 @@ select = ["E", "F", "I", "B", "UP", "SIM"]
 [tool.ty]
 python-version = "3.13"
 strict = true
+
+[tool.diffprep]
+json_drop_keys = ["version", "timestamp", "generatedAt", "updatedAt"]
+xml_drop_tags = ["version", "timestamp"]
+xml_drop_attrs = ["timestamp", "generatedAt"]
+
+
