@@ -1,7 +1,7 @@
 from functools import lru_cache
 from typing import ClassVar, override
 
-from pydantic import ConfigDict, Field
+from pydantic import Field
 from pydantic_settings import (
     BaseSettings,
     PydanticBaseSettingsSource,
@@ -11,15 +11,15 @@ from pydantic_settings import (
 
 
 class Settings(BaseSettings):
-    model_config: ClassVar[ConfigDict] = SettingsConfigDict(
+    model_config: ClassVar[SettingsConfigDict] = SettingsConfigDict(
         extra="ignore",
         pyproject_toml_table_header=("tool", "diffprep"),
         pyproject_toml_depth=3,
     )
 
-    json_drop_keys: set[str] = Field(default_factory=lambda: {"version", "timestamp"})
-    xml_drop_tags: set[str] = Field(default_factory=lambda: {"version", "timestamp"})
-    xml_drop_attrs: set[str] = Field(default_factory=lambda: {"timestamp"})
+    json_drop_keys: set[str] = Field(default_factory=set)
+    xml_drop_tags: set[str] = Field(default_factory=set)
+    xml_drop_attrs: set[str] = Field(default_factory=set)
 
     @classmethod
     @override
