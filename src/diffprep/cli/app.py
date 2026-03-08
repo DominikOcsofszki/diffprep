@@ -5,7 +5,7 @@ import typer
 from diffprep.cli.completion import description_for_field, enum_field_completion
 from diffprep.cli.enums import InputType, NormalizeSettings
 from diffprep.cli.io import read_stdin_bytes, write_stdout_bytes
-from diffprep.processors.registry import get_processor
+from diffprep.processors import get_processor
 
 app = typer.Typer(help="Command-line JSON and XML diff preprocessor.")
 

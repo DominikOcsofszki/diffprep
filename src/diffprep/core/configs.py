@@ -1,8 +1,8 @@
 import logging
 from functools import lru_cache
-from typing import ClassVar, override
+from typing import ClassVar, Literal, override
 
-from pydantic import Field
+from pydantic import BaseModel, Field
 from pydantic_settings import (
     BaseSettings,
     PydanticBaseSettingsSource,
@@ -13,6 +13,34 @@ from pydantic_settings import (
 logger = logging.getLogger(__name__)
 
 
+class LoggerSettings(BaseModel):
+    level: Literal["CRITICAL", "ERROR", "WARNING", "INFO", "DEBUG"] = "INFO"
+    fmt: str = Field(default="%(filename)-16s:%(lineno)1d  %(message)s")
+    disable_existing_loggers: bool = Field(default=False)
+
+
+class NormalizeSettings(BaseModel):
+    trailing_newline: bool = True
+
+
+class JsonSettings(BaseModel):
+    drop_keys: set[str] = Field(default_factory=set)
+    indent: int | str | None = 4
+    sort_keys: bool = True
+    ensure_ascii: bool = False
+    style: Literal["pretty", "compact"] = "pretty"
+
+
+class XmlSettings(BaseModel):
+    drop_tags: set[str] = Field(default_factory=set)
+    drop_attrs: set[str] = Field(default_factory=set)
+    indent: int = 4
+    pretty: bool = True
+    declaration: bool = False
+    sort_attrs: bool = True
+    strip_text: bool = True
+
+
 class Settings(BaseSettings):
     model_config: ClassVar[SettingsConfigDict] = SettingsConfigDict(
         extra="ignore",
@@ -20,9 +48,10 @@ class Settings(BaseSettings):
         pyproject_toml_depth=3,
     )
 
-    json_drop_keys: set[str] = Field(default_factory=set)
-    xml_drop_tags: set[str] = Field(default_factory=set)
-    xml_drop_attrs: set[str] = Field(default_factory=set)
+    normalize: NormalizeSettings = Field(default_factory=NormalizeSettings)
+    json_settings: JsonSettings = Field(default_factory=JsonSettings)
+    xml_settings: XmlSettings = Field(default_factory=XmlSettings)
+    logger_settings: LoggerSettings = Field(default_factory=LoggerSettings)
 
     @classmethod
     @override

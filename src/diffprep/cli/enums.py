@@ -1,13 +1,9 @@
-from enum import StrEnum
 from typing import ClassVar
 
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-
-class InputType(StrEnum):
-    JSON = "json"
-    XML = "xml"
+from diffprep.types import InputType
 
 
 class NormalizeSettings(BaseSettings):
