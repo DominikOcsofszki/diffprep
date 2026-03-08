@@ -11,6 +11,7 @@ dependencies = [
 	"canonicaljson>=2.0.0",
 	"lxml>=6.0.2",
 	"pydantic-settings>=2.13.1",
+	"pytest>=9.0.2",
 	"typer>=0.24.1",
 ]
 license = {file = "LICENSE"}
