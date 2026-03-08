@@ -1,16 +1,9 @@
 import logging
 import logging.config
-from typing import Literal
 
-from pydantic import BaseModel, Field
+from diffprep.core.configs import LoggerSettings
 
 logger = logging.getLogger(__name__)
-
-
-class LoggerSettings(BaseModel):
-    level: Literal["CRITICAL", "ERROR", "WARNING", "INFO", "DEBUG"] = "DEBUG"
-    fmt: str = Field(default="%(filename)-16s:%(lineno)1d  %(message)s")
-    disable_existing_loggers: bool = Field(default=False)
 
 
 def build_logging_config(settings: LoggerSettings) -> dict[str, object]:

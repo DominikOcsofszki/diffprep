@@ -13,6 +13,12 @@ from pydantic_settings import (
 logger = logging.getLogger(__name__)
 
 
+class LoggerSettings(BaseModel):
+    level: Literal["CRITICAL", "ERROR", "WARNING", "INFO", "DEBUG"] = "INFO"
+    fmt: str = Field(default="%(filename)-16s:%(lineno)1d  %(message)s")
+    disable_existing_loggers: bool = Field(default=False)
+
+
 class NormalizeSettings(BaseModel):
     trailing_newline: bool = True
 
@@ -45,6 +51,7 @@ class Settings(BaseSettings):
     normalize: NormalizeSettings = Field(default_factory=NormalizeSettings)
     json_settings: JsonSettings = Field(default_factory=JsonSettings)
     xml_settings: XmlSettings = Field(default_factory=XmlSettings)
+    logger_settings: LoggerSettings = Field(default_factory=LoggerSettings)
 
     @classmethod
     @override
