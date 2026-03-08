@@ -29,7 +29,7 @@ def test_settings() -> Settings:
     return Settings(
         normalize=NormalizeSettings(trailing_newline=True),
         json_settings=JsonSettings(
-            drop_keys=set(),
+            drop_keys={"version"},
             indent=None,
             sort_keys=True,
             ensure_ascii=False,

@@ -75,5 +75,5 @@ class Settings(BaseSettings):
 @lru_cache(maxsize=1)
 def get_settings() -> Settings:
     settings = Settings()
-    logger.debug("Settings initialized: %s", settings)
+    logger.info("Settings initialized: %s", settings)
     return settings
