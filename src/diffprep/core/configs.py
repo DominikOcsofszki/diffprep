@@ -1,5 +1,5 @@
 import logging
-from functools import lru_cache
+import logging.config
 from typing import ClassVar, Literal, override
 
 from pydantic import BaseModel, Field
@@ -46,6 +46,8 @@ class Settings(BaseSettings):
         extra="ignore",
         pyproject_toml_table_header=("tool", "diffprep"),
         pyproject_toml_depth=3,
+        env_prefix="DIFFPREP_",
+        env_nested_delimiter="__",
     )
 
     normalize: NormalizeSettings = Field(default_factory=NormalizeSettings)
@@ -70,10 +72,3 @@ class Settings(BaseSettings):
             dotenv_settings,
             file_secret_settings,
         )
-
-
-@lru_cache(maxsize=1)
-def get_settings() -> Settings:
-    settings = Settings()
-    logger.info("Settings initialized: %s", settings)
-    return settings

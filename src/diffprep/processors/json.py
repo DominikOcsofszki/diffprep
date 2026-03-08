@@ -1,4 +1,5 @@
 import json
+import logging
 
 from diffprep.core import get_settings
 from diffprep.core.configs import JsonSettings, NormalizeSettings
@@ -14,6 +15,7 @@ def _decode_json(data: bytes) -> JSONValue:
 
 
 def _scrub_json(value: JSONValue, drop_keys: set[str]) -> JSONValue:
+    logging.debug(drop_keys)
     if isinstance(value, dict):
         return {
             key: _scrub_json(child, drop_keys)
@@ -52,6 +54,7 @@ def _normalize_json(
 @register_processor(InputType.JSON)
 def prepare_json(data: bytes) -> bytes:
     settings = get_settings()
+    logging.debug(settings)
 
     parsed = _decode_json(data)
     cleaned = _scrub_json(parsed, settings.json_settings.drop_keys)
