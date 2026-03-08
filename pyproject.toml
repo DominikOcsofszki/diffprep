@@ -48,7 +48,21 @@ include = ["src", "tests"]
 [tool.ty.environment]
 python-version = "3.13"
 
-[tool.diffprep]
-json_drop_keys = ["version", "timestamp", "generatedAt", "updatedAt"]
-xml_drop_tags = ["version", "timestamp"]
-xml_drop_attrs = ["timestamp", "generatedAt"]
+[tool.diffprep.normalize]
+trailing_newline = true
+
+[tool.diffprep.json]
+drop_keys = ["timestamp", "updatedAt", "generatedAt", "version"]
+indent = 4
+sort_keys = true
+ensure_ascii = false
+style = "pretty"
+
+[tool.diffprep.xml]
+drop_tags = ["metadata"]
+drop_attrs = ["version", "updatedAt"]
+indent = 2
+pretty = true
+declaration = false
+sort_attrs = true
+strip_text = true

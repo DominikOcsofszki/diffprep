@@ -1,5 +1,6 @@
 import pytest
 
+from diffprep.core import Settings
 from diffprep.processors import get_processor
 from diffprep.types import InputType
 
@@ -11,6 +12,20 @@ CASES = [
 
 
 @pytest.mark.parametrize("case", CASES)
-def test_prepare_json(case: dict[str, str]) -> None:
+def test_prepare_json(
+    case: dict[str, str],
+    monkeypatch: pytest.MonkeyPatch,
+    test_settings: Settings,
+) -> None:
+    monkeypatch.setattr(
+        "diffprep.processors.json.get_settings",
+        lambda: test_settings,
+    )
+
     json_processor = get_processor(InputType.JSON)
-    assert json_processor(case["data"].encode()) == case["expected"].encode()
+
+    expected = case["expected"]
+    if test_settings.normalize.trailing_newline:
+        expected += "\n"
+
+    assert json_processor(case["data"].encode()) == expected.encode()
