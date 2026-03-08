@@ -4,15 +4,16 @@ version = "0.1.0"
 description = "Command-line JSON and XML diff preprocessor."
 readme = "README.md"
 authors = [
-    { name = "Dominik Ocsofszki", email = "dominikocsofszki@gmail.com" }
+	{ name = "Dominik Ocsofszki", email = "dominikocsofszki@gmail.com" }
 ]
 requires-python = ">=3.13"
 dependencies = [
-    "canonicaljson>=2.0.0",
-    "lxml>=6.0.2",
-    "pydantic-settings>=2.13.1",
-    "typer>=0.24.1",
+	"canonicaljson>=2.0.0",
+	"lxml>=6.0.2",
+	"pydantic-settings>=2.13.1",
+	"typer>=0.24.1",
 ]
+license = {file = "LICENSE"}
 
 [project.scripts]
 diffprep = "diffprep.cli.app:app"
@@ -23,27 +24,25 @@ build-backend = "uv_build"
 
 [dependency-groups]
 dev = [
-    "ruff>=0.15.5",
-    "ty>=0.0.21",
+	"pre-commit>=4.5.1",
+	"ruff>=0.15.5",
+	"ty>=0.0.21",
 ]
-
-
 
 [tool.ruff]
 line-length = 150
-target-version = "py313"
 src = ["src", "tests"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP", "SIM"]
 
-[tool.ty]
+[tool.ty.src]
+include = ["src", "tests"]
+
+[tool.ty.environment]
 python-version = "3.13"
-strict = true
 
 [tool.diffprep]
 json_drop_keys = ["version", "timestamp", "generatedAt", "updatedAt"]
 xml_drop_tags = ["version", "timestamp"]
 xml_drop_attrs = ["timestamp", "generatedAt"]
-
-
