@@ -28,5 +28,5 @@ def build_logging_config(settings: LoggerSettings) -> dict[str, object]:
     }
 
 
-def setup_logging(settings: LoggerSettings | None = None) -> None:
-    logging.config.dictConfig(build_logging_config(settings or LoggerSettings()))
+def setup_logging(settings: LoggerSettings) -> None:
+    logging.config.dictConfig(build_logging_config(settings))
