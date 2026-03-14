@@ -1,7 +1,7 @@
 from collections.abc import Callable, Mapping
 from types import MappingProxyType
 
-from diffprep.cli.enums import InputType
+from diffprep.types import InputType
 
 type Processor = Callable[[bytes], bytes]
 

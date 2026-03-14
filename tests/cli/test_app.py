@@ -2,8 +2,8 @@ from pytest import MonkeyPatch
 from typer.testing import CliRunner
 
 from diffprep.cli.app import app
-from diffprep.cli.enums import InputType
 from diffprep.processors import Processor
+from diffprep.types import InputType
 
 
 def test_normalize_json_happy_path(
