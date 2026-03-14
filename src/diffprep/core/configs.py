@@ -1,5 +1,6 @@
+from __future__ import annotations
+
 import logging
-import logging.config
 from typing import ClassVar, Literal, override
 
 from pydantic import BaseModel, Field
@@ -14,31 +15,80 @@ logger = logging.getLogger(__name__)
 
 
 class LoggerSettings(BaseModel):
-    level: Literal["CRITICAL", "ERROR", "WARNING", "INFO", "DEBUG"] = "INFO"
-    fmt: str = Field(default="%(filename)-16s:%(lineno)1d  %(message)s")
-    disable_existing_loggers: bool = Field(default=False)
+    level: Literal["CRITICAL", "ERROR", "WARNING", "INFO", "DEBUG"] = Field(
+        default="INFO",
+        description="Logging level.",
+    )
+    fmt: str = Field(
+        default="%(filename)-16s:%(lineno)1d  %(message)s",
+        description="Logging format string.",
+    )
+    disable_existing_loggers: bool = Field(
+        default=False,
+        description="Disable pre-existing loggers when configuring logging.",
+    )
 
 
 class NormalizeSettings(BaseModel):
-    trailing_newline: bool = True
+    trailing_newline: bool = Field(
+        default=True,
+        description="Ensure normalized output ends with a trailing newline.",
+    )
 
 
 class JsonSettings(BaseModel):
-    drop_keys: set[str] = Field(default_factory=set)
-    indent: int | str | None = 4
-    sort_keys: bool = True
-    ensure_ascii: bool = False
-    style: Literal["pretty", "compact"] = "pretty"
+    drop_keys: set[str] = Field(
+        default_factory=set,
+        description="JSON object keys to remove recursively before output.",
+    )
+    indent: int | str | None = Field(
+        default=4,
+        description="Indentation used for pretty JSON output.",
+    )
+    sort_keys: bool = Field(
+        default=True,
+        description="Sort JSON object keys for stable output.",
+    )
+    ensure_ascii: bool = Field(
+        default=False,
+        description="Escape non-ASCII characters in JSON output.",
+    )
+    style: Literal["pretty", "compact"] = Field(
+        default="pretty",
+        description="JSON output style.",
+    )
 
 
 class XmlSettings(BaseModel):
-    drop_tags: set[str] = Field(default_factory=set)
-    drop_attrs: set[str] = Field(default_factory=set)
-    indent: int = 4
-    pretty: bool = True
-    declaration: bool = False
-    sort_attrs: bool = True
-    strip_text: bool = True
+    drop_tags: set[str] = Field(
+        default_factory=set,
+        description="XML tags to remove recursively before output.",
+    )
+    drop_attrs: set[str] = Field(
+        default_factory=set,
+        description="XML attributes to remove from all elements.",
+    )
+    indent: int = Field(
+        default=4,
+        ge=0,
+        description="Indentation used for pretty XML output.",
+    )
+    pretty: bool = Field(
+        default=True,
+        description="Pretty-print XML output.",
+    )
+    declaration: bool = Field(
+        default=False,
+        description="Include XML declaration in serialized output.",
+    )
+    sort_attrs: bool = Field(
+        default=True,
+        description="Sort XML attributes for stable output.",
+    )
+    strip_text: bool = Field(
+        default=True,
+        description="Strip surrounding whitespace from XML text nodes where applicable.",
+    )
 
 
 class Settings(BaseSettings):
@@ -65,10 +115,11 @@ class Settings(BaseSettings):
         dotenv_settings: PydanticBaseSettingsSource,
         file_secret_settings: PydanticBaseSettingsSource,
     ) -> tuple[PydanticBaseSettingsSource, ...]:
+        pyproject_settings = PyprojectTomlConfigSettingsSource(settings_cls)
         return (
             init_settings,
-            PyprojectTomlConfigSettingsSource(settings_cls),
             env_settings,
             dotenv_settings,
+            pyproject_settings,
             file_secret_settings,
         )
